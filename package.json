@@ -2,7 +2,7 @@
   "name": "crx-to-xpi",
   "version": "1.0.0",
   "description": "A simple tool that can help you port WebExtensions to Firefox",
-  "main": "main.js",
+  "main": "crx-to-xpi",
   "repository": "https://github.com/bobby1030/crx-to-xpi.git",
   "author": "BobbyHo <angela.bobby@gmail.com>",
   "license": "MIT",
