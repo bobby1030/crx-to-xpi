@@ -7,6 +7,8 @@
   "author": "BobbyHo <angela.bobby@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "archiver": "^1.3.0",
+    "fs-extra": "^2.0.0",
     "unzip-crx": "^0.2.0"
   }
 }
