@@ -12,7 +12,7 @@ npm install
 ```
 
 ## TODO
-* Implement a better path processing method to support non-Unix environment.
+* Implement a better path processing method to support non-Unix-like environment.
 * Give some warnings when the addon use an WebExtension API that is not supported by Firefox.
 
 ## How does it work?
