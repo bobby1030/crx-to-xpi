@@ -2,10 +2,11 @@
 
 const fs = require('fs');
 const crx = require('unzip-crx');
-const path = require('path')
+const archiver = require('archiver');
+const path = require('path');
 
-var crxfilepath = process.argv[2];
-var unpack_dest = process.argv[3] || `${path.basename(crxfilepath, '.crx')}_unzipped`;
+var crxFilePath = process.argv[2];
+var crxUnpackPath = process.argv[3] || path.basename(crxFilePath, '.crx') + '_unzipped';
 
 var log = function(type = 'status', content) {
     if (type == 'error') {
@@ -21,32 +22,42 @@ var pushObject = function(obj, key, value) {
 }
 
 var readCrxFile = function() {
-    if (path.extname(crxfilepath) == '.crx') {
-        crx(crxfilepath, unpack_dest)
+    if (path.extname(crxFilePath) == '.crx') {
+        crx(crxFilePath, crxUnpackPath)
             .then(() => {
                 log('status', 'Unpacking CRX file.')
                 modifyManifest()
             })
     } else {
-        log('error', `\"${crxfilepath}\" is not a valid Chrome extension`);
+        log('error', `\"${crxFilePath}\" is not a valid Chrome extension`);
     }
 }
 
 var modifyManifest = function() {
-    var declareGeckoSupport = {
-            'gecko': {
-                'id': `${path.basename(crxfilepath, '.crx')}@crx-to-xpi`
-            }
-    };
-    // Infos that need to be pushed into "manifest.json"
-
-    fs.readFile(`${unpack_dest}/manifest.json`, 'utf8', (err, data) => {
+    fs.readFile(`${crxUnpackPath}/manifest.json`, 'utf8', (err, data) => {
         var manifestContent = JSON.parse(data);
-        manifestContent = pushObject(manifestContent, 'applications', declareGeckoSupport);
         
-        fs.writeFile(`${unpack_dest}/manifest.json`, JSON.stringify(manifestContent), 'utf8');
-        console.log(manifestContent)
+        var declareGeckoSupport = {
+            'gecko': {
+                'id': `${manifestContent.name}@crx-to-xpi`
+            }
+        };
+        // Infos that need to be pushed into "manifest.json"
+        
+        manifestContent = pushObject(manifestContent, 'applications', declareGeckoSupport);
+        fs.writeFile(`${crxUnpackPath}/manifest.json`, JSON.stringify(manifestContent), 'utf8', (err) => {
+            packXPI(manifestContent.name)
+        });
+        // Write modified manifest
     })
+}
+
+var packXPI = function(name) {
+    var output = fs.createWriteStream(__dirname + `/${name}.xpi`);
+    var xpi = archiver('zip', {store: true});
+    xpi.pipe(output);
+    xpi.directory(`${__dirname}/${crxUnpackPath}/`, '/')
+    xpi.finalize();
 }
 
 readCrxFile();
