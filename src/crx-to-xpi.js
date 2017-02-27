@@ -5,8 +5,8 @@ const crx = require('unzip-crx');
 const archiver = require('archiver');
 const path = require('path');
 
-var crxFilePath = process.argv[2];
-var crxTempUnpackPath = __dirname + '/temp';
+const crxFilePath = process.argv[2];
+const crxTempUnpackPath = __dirname + '/temp';
 
 var log = (type = 'status', content) => {
 	if (type == 'error') {
