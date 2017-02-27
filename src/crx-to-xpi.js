@@ -6,7 +6,7 @@ const archiver = require('archiver');
 const path = require('path');
 
 const crxFilePath = process.argv[2];
-const crxTempUnpackPath = __dirname + '/temp';
+const crxTempUnpackPath = '/tmp' + '/crx-to-xpi-temp';
 
 var log = (type = 'status', content) => {
 	if (type == 'error') {
@@ -71,14 +71,15 @@ var modifyManifest = () => {
 }
 
 var packXPI = (name) => {
-	let xpiStream = fs.createWriteStream(__dirname + `/${name}.xpi`);
+	let destPath = process.cwd();
+	let xpiStream = fs.createWriteStream(`${destPath}/${name}.xpi`);
 	let xpi = archiver('zip', {
 		store: true
 	});
 
 	xpiStream.on('close', function () {
 		log('status', 'XPI was packed and generated successfully');
-		log('status', `XPI is located in \"${__dirname}/${name}.xpi\"`)
+		log('status', `XPI is located in \"${destPath}/${name}.xpi\"`)
 		cleanupTempData()
 	});
 	xpi.on('error', function (err) {
