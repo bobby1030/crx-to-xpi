@@ -1,5 +1,7 @@
 # crx-to-xpi
-> A simple tool that can help you port WebExtensions to Firefox easily.
+> A simple tool that can help you port WebExtensions to Firefox easily.  
+
+[![npm version](https://badge.fury.io/js/crx-to-xpi.svg)](https://www.npmjs.com/package/crx-to-xpi)
 
 ## Dependencies
 * `node`
@@ -7,8 +9,8 @@
 
 ## Usage
 ```shell
-npm install
-./crx-to-xpi your-addon.crx
+npm install crx-to-xpi
+crx-to-xpi your-addon.crx
 ```
 
 ## TODO
