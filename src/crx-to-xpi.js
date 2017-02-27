@@ -25,23 +25,23 @@ var readCrxFile = () => {
 	if (path.extname(crxFilePath) == '.crx') {
 		crx(crxFilePath, crxTempUnpackPath)
 			.then(() => {
-				log('status', 'Unpacking CRX file...')
+				log('status', 'Unpacking CRX file...');
 				modifyManifest();
 			})
 			.catch((err) => {
 				log('error', 'Failed to unpack CRX file');
 				throw err;
-			})
+			});
 	} else {
 		log('error', `\"${crxFilePath}\" is not a valid Chrome extension`);
 		terminate();
 	}
-}
+};
 
 var modifyManifest = () => {
 	fs.readFile(`${crxTempUnpackPath}/manifest.json`, 'utf8', (err, data) => {
 		if (err) {
-			log('error', 'Failed to read manifest.json from unpacked crx')
+			log('error', 'Failed to read manifest.json from unpacked crx');
 			throw err;
 		} else {
 			let manifestContent = JSON.parse(data);
@@ -55,20 +55,20 @@ var modifyManifest = () => {
 
 			manifestContent = pushObject(manifestContent, 'applications', declareGeckoSupport);
 
-			log('status', 'Trying to write modified manifests into manifest.json')
+			log('status', 'Trying to write modified manifests into manifest.json');
 			fs.writeFile(`${crxTempUnpackPath}/manifest.json`, JSON.stringify(manifestContent), 'utf8', (err) => {
 				if (err) {
 					log('error', 'Failed to write manifests');
 					throw err;
 				} else {
-					log('status', 'Manifests were written successfully')
+					log('status', 'Manifests were written successfully');
 					packXPI(manifestContent.name);
 				}
 			});
 			// Write modified manifest
 		}
 	});
-}
+};
 
 var packXPI = (name) => {
 	let destPath = process.cwd();
@@ -79,20 +79,20 @@ var packXPI = (name) => {
 
 	xpiStream.on('close', function () {
 		log('status', 'XPI was packed and generated successfully');
-		log('status', `XPI is located in \"${destPath}/${name}.xpi\"`)
-		cleanupTempData()
+		log('status', `XPI is located in \"${destPath}/${name}.xpi\"`);
+		cleanupTempData();
 	});
 	xpi.on('error', function (err) {
 		log('error', 'Failed to pack XPI from source code');
-		terminate()
+		throw err;
 	});
 
 	xpi.pipe(xpiStream);
-	xpi.directory(crxTempUnpackPath, '/')
+	xpi.directory(crxTempUnpackPath, '/');
 	xpi.finalize();
 
-	log('status', 'Trying to pack XPI from source code')
-}
+	log('status', 'Trying to pack XPI from source code');
+};
 
 var cleanupTempData = () => {
 	fs.remove(crxTempUnpackPath, (err) => {
@@ -103,10 +103,10 @@ var cleanupTempData = () => {
 			terminate();
 		}
 	});
-}
+};
 
 var terminate = () => {
 	log('status', 'Tasks finished. Terminating... Good Bye!');
-}
+};
 
 readCrxFile();
