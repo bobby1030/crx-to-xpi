@@ -44,9 +44,9 @@ var modifyManifest = () => {
 			log('error', 'Failed to read manifest.json from unpacked crx')
 			throw err;
 		} else {
-			var manifestContent = JSON.parse(data);
+			let manifestContent = JSON.parse(data);
 
-			var declareGeckoSupport = {
+			let declareGeckoSupport = {
 				'gecko': {
 					'id': `${manifestContent.name}@crx-to-xpi`
 				}
@@ -71,8 +71,8 @@ var modifyManifest = () => {
 }
 
 var packXPI = (name) => {
-	var xpiStream = fs.createWriteStream(__dirname + `/${name}.xpi`);
-	var xpi = archiver('zip', {
+	let xpiStream = fs.createWriteStream(__dirname + `/${name}.xpi`);
+	let xpi = archiver('zip', {
 		store: true
 	});
 
