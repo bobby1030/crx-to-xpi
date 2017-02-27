@@ -1,6 +1,6 @@
 {
   "name": "crx-to-xpi",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple tool that can help you port WebExtensions to Firefox",
   "main": "crx-to-xpi",
   "bin": {
