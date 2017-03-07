@@ -45,10 +45,12 @@ var modifyManifest = () => {
 			throw err;
 		} else {
 			let manifestContent = JSON.parse(data);
+			let packageName = manifestContent.name.replace(/\ /, '_')
+			// Replace spaces to prevent installation error in Firefox
 
 			let declareGeckoSupport = {
 				'gecko': {
-					'id': `${manifestContent.name}@crx-to-xpi`
+					'id': `${packageName}@crx-to-xpi`
 				}
 			};
 			// Infos that need to be pushed into "manifest.json"
@@ -62,7 +64,7 @@ var modifyManifest = () => {
 					throw err;
 				} else {
 					log('status', 'Manifests were written successfully');
-					packXPI(manifestContent.name);
+					packXPI(packageName);
 				}
 			});
 			// Write modified manifest
