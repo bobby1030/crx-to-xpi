@@ -9,7 +9,7 @@
 
 ## Usage
 ```shell
-npm install crx-to-xpi
+npm install -g crx-to-xpi
 crx-to-xpi your-addon.crx
 ```
 
