@@ -45,7 +45,7 @@ var modifyManifest = () => {
 			throw err;
 		} else {
 			let manifestContent = JSON.parse(data);
-			let packageName = manifestContent.name.replace(/\ /, '_')
+			let packageName = manifestContent.name.replace(/\ /, '_');
 			// Replace spaces to prevent installation error in Firefox
 
 			let declareGeckoSupport = {
