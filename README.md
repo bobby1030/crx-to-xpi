@@ -15,8 +15,8 @@ crx-to-xpi your-addon.crx
 
 ## TODO
 * Implement a better path processing method to support non-Unix-like environment.
-* Give some warnings when the extension use an WebExtension API that is not supported by Firefox.
-* Allow source code of extension to be used as input.
+* Give some warnings when the extension uses an WebExtension API that hasn't been supported by Firefox.
+* Allowing the source code of the extension to be used as input.
 
 ## How does it work?
 This project helps you declare gecko support in `manifest.json`, and then zip up the source code into `.xpi` format.  
